@@ -1,0 +1,16 @@
+{
+  "app_name": "Wallix",
+  "home": "Home",
+  "category": "Category",
+  "favorite": "Favorite",
+  "settings": "Settings",
+  "app_theme": "App Theme",
+  "dark_mode": "Dark Mode",
+  "light_mode": "Light Mode",
+  "language": "Language",
+  "download": "Download",
+  "more": "More",
+  "no_categories": "No Categories",
+  "no_favorites": "No Favorites",
+  "no_wallpapers": "No Wallpapers"
+}

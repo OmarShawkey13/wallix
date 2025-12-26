@@ -1,0 +1,16 @@
+{
+  "app_name": "واليكس",
+  "home": "الرئيسية",
+  "category": "التصنيفات",
+  "favorite": "المفضلة",
+  "settings": "الإعدادات",
+  "app_theme": "مظهر التطبيق",
+  "dark_mode": "الوضع الداكن",
+  "light_mode": "الوضع الفاتح",
+  "language": "اللغة",
+  "download": "تحميل",
+  "more": "المزيد",
+  "no_categories": "لا توجد تصنيفات",
+  "no_favorites": "لا توجد عناصر مفضلة",
+  "no_wallpapers": "لا توجد خلفيات"
+}
