@@ -29,6 +29,22 @@ class DioHelper {
     }
   }
 
+  static Future<Either<String, String>> downloadFile({
+    required String url,
+    required String savePath,
+  }) async {
+    try {
+      await getDio().download(url, savePath);
+      return Right(savePath);
+    } on DioException catch (error) {
+      final msg = _parseError(error);
+      return Left(msg);
+    } catch (e) {
+      debugPrint('DioHelper.download error: $e');
+      return const Left('something went wrong, please try again later');
+    }
+  }
+
   static String _parseError(DioException error) {
     final response = error.response;
     if (response == null) return 'No response from server';

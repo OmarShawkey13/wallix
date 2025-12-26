@@ -28,9 +28,7 @@ class FavoriteItem extends StatelessWidget {
               context,
               MaterialPageRoute<Object>(
                 builder: (context) => WallpaperPreviewScreen(
-                  images: homeCubit.favorites
-                      .map((e) => e.urlImage)
-                      .toList(),
+                  images: homeCubit.favorites.map((e) => e.urlImage).toList(),
                   initialIndex: index,
                 ),
               ),

@@ -55,3 +55,26 @@ class HomeFavoritesSuccessState extends HomeStates {}
 class HomeFavoritesEmptyState extends HomeStates {}
 
 class HomeFavoriteStatusChangedState extends HomeStates {}
+
+//download
+class HomeDownloadLoadingState extends HomeStates {}
+
+class HomeDownloadSuccessState extends HomeStates {
+  final String path;
+  HomeDownloadSuccessState(this.path);
+}
+
+class HomeDownloadErrorState extends HomeStates {
+  final String error;
+  HomeDownloadErrorState(this.error);
+}
+
+//wallpaper
+class HomeSetWallpaperLoadingState extends HomeStates {}
+
+class HomeSetWallpaperSuccessState extends HomeStates {}
+
+class HomeSetWallpaperErrorState extends HomeStates {
+  final String error;
+  HomeSetWallpaperErrorState(this.error);
+}

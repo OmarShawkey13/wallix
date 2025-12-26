@@ -1,7 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_wallpaper/flutter_wallpaper.dart';
+import 'package:media_scanner/media_scanner.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wallix/core/models/category_model.dart';
 import 'package:wallix/core/models/wallpaper_model.dart';
 import 'package:wallix/core/network/local/cache_helper.dart';
@@ -271,5 +276,80 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> checkFavoriteStatus(String urlImage) async {
     isCurrentWallpaperFavorite = await SqfliteHelper.isFavorite(urlImage);
     emit(HomeFavoriteStatusChangedState());
+  }
+
+  //download
+  Future<void> _requestStoragePermissions() async {
+    if (!Platform.isAndroid) return;
+
+    if (await Permission.manageExternalStorage.isDenied) {
+      await Permission.manageExternalStorage.request();
+    }
+
+    if (await Permission.storage.isDenied) {
+      await Permission.storage.request();
+    }
+  }
+
+  Future<Directory> _getWallixDirectory() async {
+    if (Platform.isAndroid) {
+      final directory = Directory('/storage/emulated/0/Pictures/Wallix');
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return directory;
+    }
+
+    return await getApplicationDocumentsDirectory();
+  }
+
+  Future<String> _downloadImage(String url) async {
+    await _requestStoragePermissions();
+    final directory = await _getWallixDirectory();
+
+    final fileName = url.split('/').last;
+    final savePath = '${directory.path}/$fileName';
+
+    final result = await DioHelper.downloadFile(
+      url: url,
+      savePath: savePath,
+    );
+
+    return result.fold(
+      (error) => throw Exception(error),
+      (path) async {
+        await MediaScanner.loadMedia(path: path);
+        return path;
+      },
+    );
+  }
+
+  Future<void> downloadWallpaper(String url) async {
+    emit(HomeDownloadLoadingState());
+
+    try {
+      final path = await _downloadImage(url);
+      emit(HomeDownloadSuccessState(path));
+    } catch (e) {
+      emit(HomeDownloadErrorState(e.toString()));
+    }
+  }
+
+  //wallpaper
+  Future<void> setWallpaper(String url, int location) async {
+    emit(HomeSetWallpaperLoadingState());
+
+    try {
+      final path = await _downloadImage(url);
+
+      await WallpaperManager.setWallpaperFromFile(
+        path,
+        location,
+      );
+
+      emit(HomeSetWallpaperSuccessState());
+    } catch (e) {
+      emit(HomeSetWallpaperErrorState(e.toString()));
+    }
   }
 }

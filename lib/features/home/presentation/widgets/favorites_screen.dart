@@ -27,19 +27,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       buildWhen: (_, state) =>
           state is HomeFavoritesLoadingState ||
           state is HomeFavoritesSuccessState ||
-          state is HomeFavoriteStatusChangedState ||
           state is HomeScaleUpdatedState ||
           state is HomeLanguageUpdatedState ||
           state is HomeLanguageSuccessState,
       builder: (context, state) {
-        return ConditionalBuilder(
-          isLoading: state is HomeFavoritesLoadingState,
-          condition: homeCubit.favorites.isNotEmpty,
-          builder: (_) => const FavoriteItem(),
-          fallback: (_) => Center(
-            child: Text(appTranslation().get('no_favorites')),
+        return RefreshIndicator(
+          onRefresh: () async {
+            homeCubit.loadFavorites();
+          },
+          child: ConditionalBuilder(
+            isLoading: state is HomeFavoritesLoadingState,
+            condition: homeCubit.favorites.isNotEmpty,
+            builder: (_) => const FavoriteItem(),
+            fallback: (_) => Center(
+              child: Text(appTranslation().get('no_favorites')),
+            ),
+            defaultLoading: const FavoriteItemLoading(),
           ),
-          defaultLoading: const FavoriteItemLoading(),
         );
       },
     );
