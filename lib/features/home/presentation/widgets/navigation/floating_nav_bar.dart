@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallix/core/theme/colors.dart';
+import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/assets_helper.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
@@ -38,9 +39,7 @@ class FloatingNavBar extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: ColorsManager.isDark
-                              ? Colors.white.withValues(alpha: 0.1)
-                              : Colors.black.withValues(alpha: 0.05),
+                          color: ColorsManager.outlineColor.withValues(alpha: 0.1),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -126,9 +125,7 @@ class _NavItem extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              style: (isSelected ? TextStylesManager.bold10 : TextStylesManager.regular10).copyWith(
                 color: isSelected
                     ? ColorsManager.primary
                     : ColorsManager.iconSecondaryColor,

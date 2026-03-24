@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallix/core/theme/colors.dart';
 import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
 
@@ -56,9 +57,7 @@ class CategoryCard extends StatelessWidget {
                     loadingBuilder: (context, child, progress) {
                       if (progress == null) return child;
                       return Container(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.surfaceContainerHighest,
+                        color: ColorsManager.cardColor,
                         child: const Center(
                           child: CircularProgressIndicator.adaptive(
                             strokeWidth: 2,
@@ -67,8 +66,11 @@ class CategoryCard extends StatelessWidget {
                       );
                     },
                     errorBuilder: (context, error, stackTrace) => Container(
-                      color: Theme.of(context).colorScheme.errorContainer,
-                      child: const Icon(Icons.broken_image_outlined),
+                      color: ColorsManager.error.withValues(alpha: 0.1),
+                      child: const Icon(
+                        Icons.broken_image_outlined,
+                        color: ColorsManager.error,
+                      ),
                     ),
                   ),
                 ),
@@ -100,9 +102,8 @@ class CategoryCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStylesManager.bold18.copyWith(
+                        style: TextStylesManager.bold20.copyWith(
                           color: Colors.white,
-                          fontSize: 20,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -118,9 +119,8 @@ class CategoryCard extends StatelessWidget {
                         ),
                         child: Text(
                           '$count Wallpapers',
-                          style: TextStylesManager.regular12.copyWith(
+                          style: TextStylesManager.medium12.copyWith(
                             color: Colors.white.withValues(alpha: 0.9),
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),

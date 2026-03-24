@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallpaper/flutter_wallpaper.dart';
+import 'package:wallix/core/theme/colors.dart';
 import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
@@ -29,9 +30,7 @@ class SetWallpaperBottomSheet extends StatelessWidget {
           Center(
             child: Text(
               appTranslation().get('set_wallpaper'),
-              style: TextStylesManager.bold18.copyWith(
-                fontSize: 20,
-              ),
+              style: TextStylesManager.bold20,
             ),
           ),
           verticalSpace24,
@@ -95,26 +94,19 @@ class _SheetItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          color: Theme.of(
-            context,
-          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          color: ColorsManager.cardColor.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+            color: ColorsManager.outlineColor.withValues(alpha: 0.5),
           ),
         ),
         child: Row(
           children: [
-            Icon(icon, color: Theme.of(context).colorScheme.primary),
+            Icon(icon, color: ColorsManager.primary),
             horizontalSpace16,
             Text(
               title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
+              style: TextStylesManager.medium16,
             ),
             const Spacer(),
             const Icon(Icons.chevron_right_rounded, size: 20),

@@ -135,7 +135,7 @@ class HomeCubit extends Cubit<HomeStates> {
   }) => List.generate(
     count,
     (i) =>
-        'https://raw.githubusercontent.com/OmarShawkey13/WallPaper/main/$categoryName/${i + 1}.jpg',
+        'https://raw.githubusercontent.com/OmarShawkey13/WallPaper/main/$categoryName/${categoryName}_${i + 1}.jpg',
   );
 
   // ================== UI INTERACTIONS ==================

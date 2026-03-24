@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallix/core/theme/colors.dart';
+import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/assets_helper.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
@@ -40,9 +41,8 @@ class HomeScreen extends StatelessWidget {
                     horizontalSpace10,
                     Text(
                       appTranslation().get('app_name'),
-                      style: TextStyle(
+                      style: TextStylesManager.bold18.copyWith(
                         color: ColorsManager.textColor,
-                        fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
                     ),

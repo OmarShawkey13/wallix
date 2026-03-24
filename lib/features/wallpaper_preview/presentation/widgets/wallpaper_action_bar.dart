@@ -1,7 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:wallix/core/theme/colors.dart';
+import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
+import 'package:wallix/features/wallpaper_preview/presentation/widgets/action_bar_item.dart';
 
 class WallpaperActionBar extends StatelessWidget {
   final VoidCallback onDownload;
@@ -39,7 +42,7 @@ class WallpaperActionBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                _buildActionButton(
+                ActionBarItem(
                   onTap: onFavorite,
                   icon: isFavorite
                       ? const Icon(Icons.favorite, color: Colors.redAccent)
@@ -53,18 +56,16 @@ class WallpaperActionBar extends StatelessWidget {
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.tertiary,
+                            ColorsManager.primary,
+                            ColorsManager.tertiary,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primary.withValues(alpha: 0.3),
+                            color: ColorsManager.primary.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -81,10 +82,8 @@ class WallpaperActionBar extends StatelessWidget {
                             horizontalSpace8,
                             Text(
                               appTranslation().get('download'),
-                              style: const TextStyle(
+                              style: TextStylesManager.bold16.copyWith(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
                               ),
                             ),
                           ],
@@ -94,7 +93,7 @@ class WallpaperActionBar extends StatelessWidget {
                   ),
                 ),
                 horizontalSpace8,
-                _buildActionButton(
+                ActionBarItem(
                   onTap: onMore,
                   icon: const Icon(Icons.tune_rounded, color: Colors.white),
                   label: appTranslation().get('more'),
@@ -103,25 +102,6 @@ class WallpaperActionBar extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required VoidCallback onTap,
-    required Widget icon,
-    required String label,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: icon,
       ),
     );
   }
