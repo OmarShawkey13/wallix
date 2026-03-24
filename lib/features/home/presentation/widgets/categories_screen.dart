@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/primary/conditional_builder.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
-import 'package:wallix/core/utils/cubit/home_state.dart';
+import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/home/home_state.dart';
 import 'package:wallix/features/home/presentation/widgets/categories/category_item.dart';
 import 'package:wallix/features/home/presentation/widgets/categories/category_item_loading.dart';
 
@@ -27,9 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       buildWhen: (_, state) =>
           state is HomeGetCategoriesLoadingState ||
           state is HomeGetCategoriesSuccessState ||
-          state is HomeGetCategoriesErrorState ||
-          state is HomeLanguageUpdatedState ||
-          state is HomeLanguageSuccessState,
+          state is HomeGetCategoriesErrorState,
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {

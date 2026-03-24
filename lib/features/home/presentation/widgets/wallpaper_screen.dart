@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/primary/conditional_builder.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
-import 'package:wallix/core/utils/cubit/home_state.dart';
+import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/home/home_state.dart';
 import 'package:wallix/features/home/presentation/widgets/wallpaper/wallpaper_item.dart';
 import 'package:wallix/features/home/presentation/widgets/wallpaper/wallpaper_item_loading.dart';
 
@@ -43,9 +43,7 @@ class _WallpaperScreenState extends State<WallpaperScreen> {
       buildWhen: (previous, current) =>
           current is HomeGetWallpaperLoadingState ||
           current is HomeGetWallpaperSuccessState ||
-          current is HomeGetWallpaperErrorState ||
-          current is HomeLanguageUpdatedState ||
-          current is HomeLanguageSuccessState,
+          current is HomeGetWallpaperErrorState,
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {

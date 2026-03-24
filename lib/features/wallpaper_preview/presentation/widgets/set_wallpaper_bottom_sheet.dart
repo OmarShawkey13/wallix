@@ -3,7 +3,7 @@ import 'package:flutter_wallpaper/flutter_wallpaper.dart';
 import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
 import 'package:wallix/core/utils/extensions/context_extension.dart';
 
 class SetWallpaperBottomSheet extends StatelessWidget {
@@ -16,22 +16,27 @@ class SetWallpaperBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsetsDirectional.only(
-        start: 20,
-        end: 20,
-        bottom: 20,
+        start: 24,
+        end: 24,
+        bottom: 32,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            appTranslation().get('set_wallpaper'),
-            style: TextStylesManager.bold18,
+          Center(
+            child: Text(
+              appTranslation().get('set_wallpaper'),
+              style: TextStylesManager.bold18.copyWith(
+                fontSize: 20,
+              ),
+            ),
           ),
-          verticalSpace12,
+          verticalSpace24,
           _SheetItem(
-            icon: Icons.home,
+            icon: Icons.home_outlined,
             title: appTranslation().get('set_home_screen'),
             onTap: () {
               context.pop;
@@ -41,8 +46,9 @@ class SetWallpaperBottomSheet extends StatelessWidget {
               );
             },
           ),
+          verticalSpace12,
           _SheetItem(
-            icon: Icons.lock,
+            icon: Icons.lock_outline,
             title: appTranslation().get('set_lock_screen'),
             onTap: () {
               context.pop;
@@ -52,8 +58,9 @@ class SetWallpaperBottomSheet extends StatelessWidget {
               );
             },
           ),
+          verticalSpace12,
           _SheetItem(
-            icon: Icons.wallpaper,
+            icon: Icons.wallpaper_rounded,
             title: appTranslation().get('set_both_screens'),
             onTap: () {
               context.pop;
@@ -82,10 +89,38 @@ class _SheetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Theme.of(context).colorScheme.primary),
+            horizontalSpace16,
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+            const Spacer(),
+            const Icon(Icons.chevron_right_rounded, size: 20),
+          ],
+        ),
+      ),
     );
   }
 }

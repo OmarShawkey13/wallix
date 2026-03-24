@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/home/home_state.dart';
+import 'package:wallix/features/wallpaper_preview/presentation/screen/wallpaper_preview_screen.dart';
+
+class StaggeredWallpaperCard extends StatelessWidget {
+  final int index;
+
+  const StaggeredWallpaperCard({
+    super.key,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final wallpaper = homeCubit.wallpapersList[index];
+    final double height = (index % 3 == 0)
+        ? 280
+        : (index % 2 == 0)
+        ? 220
+        : 250;
+
+    return BlocBuilder<HomeCubit, HomeStates>(
+      buildWhen: (_, state) => state is HomeScaleUpdatedState,
+      builder: (context, state) {
+        final isPressed = homeCubit.scaledIndex == index;
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 14),
+          child: GestureDetector(
+            onTapDown: (_) => homeCubit.onTapDownItem(index),
+            onTapUp: (_) {
+              homeCubit.onTapUpItem();
+              Navigator.push(
+                context,
+                MaterialPageRoute<Object>(
+                  builder: (context) => WallpaperPreviewScreen(
+                    images: homeCubit.wallpapersList
+                        .map((e) => e.urlImage)
+                        .toList(),
+                    initialIndex: index,
+                  ),
+                ),
+              );
+            },
+            onTapCancel: homeCubit.onTapCancelItem,
+            child: AnimatedScale(
+              scale: isPressed ? 0.94 : 1.0,
+              duration: const Duration(milliseconds: 140),
+              curve: Curves.easeOut,
+              child: Hero(
+                tag: wallpaper.urlImage,
+                child: Container(
+                  height: height,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.12),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          wallpaper.urlImage,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHighest,
+                              child: const Center(
+                                child: CircularProgressIndicator.adaptive(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        // Overlay Gradient لمظهر احترافي
+                        Positioned.fill(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withValues(alpha: 0.2),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

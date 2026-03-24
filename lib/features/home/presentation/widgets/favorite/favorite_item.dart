@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
 import 'package:wallix/features/wallpaper_preview/presentation/screen/wallpaper_preview_screen.dart';
 
 class FavoriteItem extends StatelessWidget {
@@ -8,13 +8,13 @@ class FavoriteItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(16.0),
       physics: const BouncingScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: 0.6,
+        crossAxisSpacing: 14.0,
+        mainAxisSpacing: 14.0,
+        childAspectRatio: 0.65,
       ),
       itemCount: homeCubit.favorites.length,
       itemBuilder: (context, index) {
@@ -30,6 +30,7 @@ class FavoriteItem extends StatelessWidget {
                 builder: (context) => WallpaperPreviewScreen(
                   images: homeCubit.favorites.map((e) => e.urlImage).toList(),
                   initialIndex: index,
+                  isFromFavorites: true, // ✅ تم إضافة هذا الـ Flag
                 ),
               ),
             );
@@ -39,22 +40,39 @@ class FavoriteItem extends StatelessWidget {
             scale: isPressed ? 0.94 : 1.0,
             duration: const Duration(milliseconds: 140),
             curve: Curves.easeOut,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.network(
+            child: Hero(
+              tag: wallpaper.urlImage,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
                     wallpaper.urlImage,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, progress) {
                       if (progress == null) return child;
-                      return const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                      return Container(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                        child: const Center(
+                          child: CircularProgressIndicator.adaptive(
+                            strokeWidth: 2,
+                          ),
+                        ),
                       );
                     },
                   ),
-                ],
+                ),
               ),
             ),
           ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
-import 'package:wallix/core/utils/cubit/home_state.dart';
+import 'package:wallix/core/theme/colors.dart';
+import 'package:wallix/core/utils/constants/spacing.dart';
 import 'package:wallix/core/utils/extensions/context_extension.dart';
-import 'package:wallix/features/wallpaper_preview/presentation/screen/wallpaper_preview_screen.dart';
+import 'package:wallix/features/home/presentation/widgets/categories/category_staggered_wallpaper_card.dart';
 
 class CategoryWallpapersScreen extends StatelessWidget {
   final String title;
@@ -17,7 +16,18 @@ class CategoryWallpapersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final leftColumn = <int>[];
+    final rightColumn = <int>[];
+    for (int i = 0; i < images.length; i++) {
+      if (i % 2 == 0) {
+        leftColumn.add(i);
+      } else {
+        rightColumn.add(i);
+      }
+    }
+
     return Scaffold(
+      backgroundColor: ColorsManager.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -25,59 +35,50 @@ class CategoryWallpapersScreen extends StatelessWidget {
         ),
         title: Text(title),
         centerTitle: true,
+        backgroundColor: ColorsManager.backgroundColor,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10.0),
+      body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-          childAspectRatio: 0.6,
+        padding: const EdgeInsetsDirectional.only(
+          start: 16,
+          end: 16,
+          top: 12,
+          bottom: 20,
         ),
-        itemCount: images.length,
-        itemBuilder: (context, index) {
-          return BlocBuilder<HomeCubit, HomeStates>(
-            buildWhen: (_, scale) => scale is HomeScaleUpdatedState,
-            builder: (context, state) {
-              final isPressed = homeCubit.scaledIndex == index;
-              return GestureDetector(
-                onTapDown: (_) => homeCubit.onTapDownItem(index),
-                onTapUp: (_) {
-                  homeCubit.onTapUpItem();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<Object>(
-                      builder: (context) => WallpaperPreviewScreen(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // العمود الأيسر
+            Expanded(
+              child: Column(
+                children: leftColumn
+                    .map(
+                      (index) => CategoryStaggeredWallpaperCard(
+                        index: index,
                         images: images,
-                        initialIndex: index,
                       ),
-                    ),
-                  );
-                },
-                onTapCancel: homeCubit.onTapCancelItem,
-                child: AnimatedScale(
-                  scale: isPressed ? 0.94 : 1.0,
-                  duration: const Duration(milliseconds: 140),
-                  curve: Curves.easeOut,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      images[index],
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
+                    )
+                    .toList(),
+              ),
+            ),
+            horizontalSpace14,
+            // العمود الأيمن
+            Expanded(
+              child: Column(
+                children: rightColumn
+                    .map(
+                      (index) => CategoryStaggeredWallpaperCard(
+                        index: index,
+                        images: images,
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

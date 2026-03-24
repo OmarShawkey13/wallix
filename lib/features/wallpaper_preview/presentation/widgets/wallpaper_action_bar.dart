@@ -1,8 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:wallix/core/utils/constants/assets_helper.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
-import 'package:wallix/features/wallpaper_preview/presentation/widgets/action_bar_item.dart';
+import 'package:wallix/core/utils/constants/spacing.dart';
 
 class WallpaperActionBar extends StatelessWidget {
   final VoidCallback onDownload;
@@ -21,67 +20,108 @@ class WallpaperActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 24,
-      left: 0,
-      right: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.25),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.12),
+      bottom: 32,
+      left: 24,
+      right: 24,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                _buildActionButton(
+                  onTap: onFavorite,
+                  icon: isFavorite
+                      ? const Icon(Icons.favorite, color: Colors.redAccent)
+                      : const Icon(Icons.favorite_border, color: Colors.white),
+                  label: appTranslation().get('favorite'),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ActionBarItem(
+                horizontalSpace8,
+                Expanded(
+                  child: GestureDetector(
                     onTap: onDownload,
-                    label: appTranslation().get('download'),
-                    icon: Image.asset(
-                      AssetsHelper.icDownload,
-                      color: Colors.white,
-                      width: 22,
-                      height: 22,
-                    ),
-                  ),
-                  ActionBarItem(
-                    onTap: onFavorite,
-                    label: appTranslation().get('favorite'),
-                    icon: isFavorite
-                        ? const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 22,
-                          )
-                        : Image.asset(
-                            AssetsHelper.icFavorite,
-                            color: Colors.white,
-                            width: 22,
-                            height: 22,
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.tertiary,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
-                  ),
-                  ActionBarItem(
-                    onTap: onMore,
-                    label: appTranslation().get('more'),
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
-                      size: 26,
+                        ],
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.download_rounded,
+                              color: Colors.white,
+                            ),
+                            horizontalSpace8,
+                            Text(
+                              appTranslation().get('download'),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                horizontalSpace8,
+                _buildActionButton(
+                  onTap: onMore,
+                  icon: const Icon(Icons.tune_rounded, color: Colors.white),
+                  label: appTranslation().get('more'),
+                ),
+              ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required VoidCallback onTap,
+    required Widget icon,
+    required String label,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: icon,
       ),
     );
   }

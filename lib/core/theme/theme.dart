@@ -11,7 +11,6 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       primary: ColorsManager.primary,
       secondary: ColorsManager.secondary,
-      surface: ColorsManager.lightCard,
       error: ColorsManager.error,
     ),
     appBarTheme: AppBarTheme(
@@ -39,7 +38,6 @@ class AppTheme {
       ),
     ),
     cardTheme: CardThemeData(
-      color: ColorsManager.lightCard,
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -55,7 +53,6 @@ class AppTheme {
     colorScheme: const ColorScheme.dark(
       primary: ColorsManager.primary,
       secondary: ColorsManager.secondary,
-      surface: ColorsManager.darkCard,
       error: ColorsManager.error,
     ),
     appBarTheme: AppBarTheme(
@@ -83,7 +80,6 @@ class AppTheme {
       ),
     ),
     cardTheme: CardThemeData(
-      color: ColorsManager.darkCard,
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

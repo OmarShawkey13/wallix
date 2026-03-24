@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallix/core/utils/constants/spacing.dart';
 
 class ActionBarItem extends StatelessWidget {
   final Widget icon;
@@ -23,7 +24,7 @@ class ActionBarItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             icon,
-            const SizedBox(height: 6),
+            verticalSpace6,
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

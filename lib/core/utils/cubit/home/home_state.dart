@@ -2,20 +2,6 @@ abstract class HomeStates {}
 
 class HomeInitialState extends HomeStates {}
 
-class HomeChangeThemeState extends HomeStates {}
-
-class HomeLanguageUpdatedState extends HomeStates {}
-
-class HomeLanguageLoadingState extends HomeStates {}
-
-class HomeLanguageSuccessState extends HomeStates {}
-
-class HomeLanguageErrorState extends HomeStates {
-  final String error;
-
-  HomeLanguageErrorState(this.error);
-}
-
 //bottomNav
 class HomeBottomNavIndexUpdatedState extends HomeStates {}
 

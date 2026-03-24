@@ -1,5 +1,5 @@
 import 'package:wallix/core/utils/constants/translations.dart';
-import 'package:wallix/core/utils/cubit/home_cubit.dart';
+import 'package:wallix/core/utils/cubit/theme/theme_cubit.dart';
 
 TranslationModel appTranslation() =>
-    homeCubit.translationModel ?? TranslationModel.fromJson({});
+    themeCubit.translationModel ?? TranslationModel.fromJson({});
