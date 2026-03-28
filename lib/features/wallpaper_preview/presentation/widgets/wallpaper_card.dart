@@ -16,34 +16,34 @@ class WallpaperCard extends StatelessWidget {
     return Hero(
       tag: '${imageUrl}_$index',
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.4),
-              spreadRadius: 2,
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+              color: Colors.black.withValues(alpha: 0.3),
+              spreadRadius: 0,
+              blurRadius: 30,
+              offset: const Offset(0, 15),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(32),
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
-              color: Colors.white10,
+              color: Colors.white.withValues(alpha: 0.05),
               child: const Center(
                 child: CircularProgressIndicator.adaptive(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white30),
                 ),
               ),
             ),
             errorWidget: (context, url, error) => Container(
-              color: Colors.white10,
-              child: const Icon(Icons.broken_image_outlined, color: Colors.white54),
+              color: Colors.white.withValues(alpha: 0.05),
+              child: const Icon(Icons.broken_image_outlined, color: Colors.white24),
             ),
           ),
         ),
