@@ -4,7 +4,6 @@ import 'package:wallix/core/theme/colors.dart';
 import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/constants/spacing.dart';
-import 'package:wallix/features/wallpaper_preview/presentation/widgets/action_bar_item.dart';
 
 class WallpaperActionBar extends StatelessWidget {
   final VoidCallback onDownload;
@@ -23,18 +22,18 @@ class WallpaperActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 32,
-      left: 24,
-      right: 24,
+      bottom: 40,
+      left: 20,
+      right: 20,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(32),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(24),
+              color: Colors.black.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(32),
               border: Border.all(
                 color: Colors.white.withValues(alpha: 0.15),
                 width: 1,
@@ -42,64 +41,96 @@ class WallpaperActionBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                ActionBarItem(
+                _buildCircularButton(
                   onTap: onFavorite,
-                  icon: isFavorite
-                      ? const Icon(Icons.favorite, color: Colors.redAccent)
-                      : const Icon(Icons.favorite_border, color: Colors.white),
-                  label: appTranslation().get('favorite'),
+                  icon: isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                  color: isFavorite ? Colors.redAccent : Colors.white,
                 ),
-                horizontalSpace8,
+                horizontalSpace12,
                 Expanded(
-                  child: GestureDetector(
+                  child: _buildMainAction(
                     onTap: onDownload,
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            ColorsManager.primary,
-                            ColorsManager.tertiary,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: ColorsManager.primary.withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.download_rounded,
-                              color: Colors.white,
-                            ),
-                            horizontalSpace8,
-                            Text(
-                              appTranslation().get('download'),
-                              style: TextStylesManager.bold16.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    icon: Icons.file_download_outlined,
+                    label: appTranslation().get('download'),
                   ),
                 ),
-                horizontalSpace8,
-                ActionBarItem(
+                horizontalSpace12,
+                _buildCircularButton(
                   onTap: onMore,
-                  icon: const Icon(Icons.tune_rounded, color: Colors.white),
-                  label: appTranslation().get('more'),
+                  icon: Icons.auto_awesome_mosaic_rounded,
+                  color: Colors.white,
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCircularButton({
+    required VoidCallback onTap,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withValues(alpha: 0.1),
+          ),
+          child: Icon(icon, color: color, size: 26),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMainAction({
+    required VoidCallback onTap,
+    required IconData icon,
+    required String label,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          height: 56,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              colors: [
+                ColorsManager.primary,
+                ColorsManager.primary.withValues(alpha: 0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: ColorsManager.primary.withValues(alpha: 0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: Colors.white, size: 24),
+              horizontalSpace8,
+              Text(
+                label,
+                style: TextStylesManager.bold16.copyWith(color: Colors.white),
+              ),
+            ],
           ),
         ),
       ),

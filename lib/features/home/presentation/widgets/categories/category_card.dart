@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wallix/core/theme/colors.dart';
 import 'package:wallix/core/theme/text_styles.dart';
@@ -51,21 +52,18 @@ class CategoryCard extends StatelessWidget {
               children: [
                 Hero(
                   tag: 'cat_$title',
-                  child: Image.network(
-                    imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
-                    loadingBuilder: (context, child, progress) {
-                      if (progress == null) return child;
-                      return Container(
-                        color: ColorsManager.cardColor,
-                        child: const Center(
-                          child: CircularProgressIndicator.adaptive(
-                            strokeWidth: 2,
-                          ),
+                    placeholder: (context, url) => Container(
+                      color: ColorsManager.cardColor,
+                      child: const Center(
+                        child: CircularProgressIndicator.adaptive(
+                          strokeWidth: 2,
                         ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) => Container(
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
                       color: ColorsManager.error.withValues(alpha: 0.1),
                       child: const Icon(
                         Icons.broken_image_outlined,

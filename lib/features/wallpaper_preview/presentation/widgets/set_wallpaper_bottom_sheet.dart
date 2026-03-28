@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_wallpaper/flutter_wallpaper.dart';
 import 'package:wallix/core/theme/colors.dart';
@@ -18,57 +19,62 @@ class SetWallpaperBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.only(
-        start: 24,
-        end: 24,
-        bottom: 32,
+      decoration: BoxDecoration(
+        color: ColorsManager.isDark ? const Color(0xFF1C1B1F) : Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Text(
-              appTranslation().get('set_wallpaper'),
-              style: TextStylesManager.bold20,
+          verticalSpace12,
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: ColorsManager.outlineColor.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
           verticalSpace24,
-          _SheetItem(
-            icon: Icons.home_outlined,
-            title: appTranslation().get('set_home_screen'),
-            onTap: () {
-              context.pop;
-              homeCubit.setWallpaper(
-                imageUrl,
-                WallpaperManager.homeScreen,
-              );
-            },
+          Text(
+            appTranslation().get('set_wallpaper'),
+            style: TextStylesManager.bold20,
           ),
-          verticalSpace12,
-          _SheetItem(
-            icon: Icons.lock_outline,
-            title: appTranslation().get('set_lock_screen'),
-            onTap: () {
-              context.pop;
-              homeCubit.setWallpaper(
-                imageUrl,
-                WallpaperManager.lockScreen,
-              );
-            },
+          verticalSpace24,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                _SheetItem(
+                  icon: Icons.home_rounded,
+                  title: appTranslation().get('set_home_screen'),
+                  onTap: () {
+                    context.pop;
+                    homeCubit.setWallpaper(imageUrl, WallpaperManager.homeScreen);
+                  },
+                ),
+                verticalSpace12,
+                _SheetItem(
+                  icon: Icons.lock_rounded,
+                  title: appTranslation().get('set_lock_screen'),
+                  onTap: () {
+                    context.pop;
+                    homeCubit.setWallpaper(imageUrl, WallpaperManager.lockScreen);
+                  },
+                ),
+                verticalSpace12,
+                _SheetItem(
+                  icon: Icons.phonelink_setup_rounded,
+                  title: appTranslation().get('set_both_screens'),
+                  onTap: () {
+                    context.pop;
+                    homeCubit.setWallpaper(imageUrl, WallpaperManager.bothScreen);
+                  },
+                ),
+              ],
+            ),
           ),
-          verticalSpace12,
-          _SheetItem(
-            icon: Icons.wallpaper_rounded,
-            title: appTranslation().get('set_both_screens'),
-            onTap: () {
-              context.pop;
-              homeCubit.setWallpaper(
-                imageUrl,
-                WallpaperManager.bothScreen,
-              );
-            },
-          ),
+          verticalSpace40,
         ],
       ),
     );
@@ -88,29 +94,45 @@ class _SheetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: BoxDecoration(
-          color: ColorsManager.cardColor.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: ColorsManager.outlineColor.withValues(alpha: 0.5),
-          ),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: ColorsManager.primary),
-            horizontalSpace16,
-            Text(
-              title,
-              style: TextStylesManager.medium16,
+    final isDark = ColorsManager.isDark;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: ColorsManager.outlineColor.withValues(alpha: 0.1),
             ),
-            const Spacer(),
-            const Icon(Icons.chevron_right_rounded, size: 20),
-          ],
+            color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.02),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: ColorsManager.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: ColorsManager.primary, size: 24),
+              ),
+              horizontalSpace16,
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStylesManager.medium16,
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: ColorsManager.outlineColor.withValues(alpha: 0.5),
+              ),
+            ],
+          ),
         ),
       ),
     );

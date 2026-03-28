@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallix/core/theme/colors.dart';
+import 'package:wallix/core/theme/text_styles.dart';
 import 'package:wallix/core/utils/constants/constants.dart';
 import 'package:wallix/core/utils/cubit/home/home_cubit.dart';
 import 'package:wallix/core/utils/cubit/home/home_state.dart';
@@ -55,7 +57,6 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
           if (currentImages.isEmpty) {
             context.pop;
           } else {
-            // التأكد من أن الـ index الحالي لا يزال صالحاً بعد الحذف
             if (homeCubit.pageCurrentIndex >= currentImages.length) {
               homeCubit.pageCurrentIndex = currentImages.length - 1;
             }
@@ -73,7 +74,6 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
           }
         }
 
-        // Handling other states (Download, Set Wallpaper)
         _handleGlobalStates(context, state);
       },
       buildWhen: (previous, current) =>
@@ -85,7 +85,7 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
             homeCubit.pageCurrentIndex < 0 ||
             homeCubit.pageCurrentIndex >= currentImages.length) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(child: CircularProgressIndicator.adaptive()),
           );
         }
 
@@ -93,17 +93,25 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
         final currentImage = currentImages[currentIndex];
 
         return Scaffold(
+          extendBodyBehindAppBar: true,
           body: Stack(
             alignment: Alignment.center,
             children: [
+              // Background Layer
               BlurredBackground(
                 imageUrl: currentImage,
                 index: currentIndex,
               ),
+              
+              // Content Layer
               WallpaperPager(
                 images: currentImages,
               ),
+              
+              // Top Bar
               const PreviewBackButton(),
+              
+              // Bottom Action Bar
               WallpaperActionBar(
                 onDownload: () => homeCubit.downloadWallpaper(currentImage),
                 onFavorite: () => homeCubit.toggleFavorite(
@@ -122,45 +130,86 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
 
   void _handleGlobalStates(BuildContext context, HomeStates state) {
     if (state is HomeDownloadLoadingState) {
-      _showSnackBar(context, appTranslation().get('downloading'));
+      _showCustomSnackBar(context, appTranslation().get('downloading'), isLoading: true);
     } else if (state is HomeDownloadSuccessState) {
-      _showSnackBar(
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      _showCustomSnackBar(
         context,
-        '${appTranslation().get('downloaded_to')} ${state.path}',
+        appTranslation().get('download_success'),
+        icon: Icons.check_circle_outline,
+        color: ColorsManager.success,
       );
     } else if (state is HomeDownloadErrorState) {
-      _showSnackBar(
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      _showCustomSnackBar(
         context,
-        '${appTranslation().get('download_error')} ${state.error}',
+        appTranslation().get('download_error'),
+        icon: Icons.error_outline,
+        color: ColorsManager.error,
       );
     } else if (state is HomeSetWallpaperLoadingState) {
-      _showSnackBar(context, appTranslation().get('setting_wallpaper'));
+      _showCustomSnackBar(context, appTranslation().get('setting_wallpaper'), isLoading: true);
     } else if (state is HomeSetWallpaperSuccessState) {
-      _showSnackBar(
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      _showCustomSnackBar(
         context,
         appTranslation().get('wallpaper_set_successfully'),
-      );
-    } else if (state is HomeSetWallpaperErrorState) {
-      _showSnackBar(
-        context,
-        '${appTranslation().get('wallpaper_set_error')} ${state.error}',
+        icon: Icons.wallpaper_rounded,
+        color: ColorsManager.success,
       );
     }
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+  void _showCustomSnackBar(BuildContext context, String message,
+      {bool isLoading = false, IconData? icon, Color? color}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: ColorsManager.isDark ? const Color(0xFF2C2C2C) : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              if (isLoading)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else if (icon != null)
+                Icon(icon, color: color ?? ColorsManager.primary, size: 22),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  message,
+                  style: TextStylesManager.medium14.copyWith(
+                    color: ColorsManager.isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _showWallpaperOptions(BuildContext context, String imageUrl) {
     showModalBottomSheet<Object>(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      showDragHandle: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (_) => SetWallpaperBottomSheet(imageUrl: imageUrl),
     );
   }

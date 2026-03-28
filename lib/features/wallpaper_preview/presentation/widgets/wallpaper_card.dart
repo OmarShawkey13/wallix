@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class WallpaperCard extends StatelessWidget {
@@ -29,20 +30,21 @@ class WallpaperCard extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(28),
-          child: Image.network(
-            imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                color: Colors.white10,
-                child: const Center(
-                  child: CircularProgressIndicator.adaptive(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
-                  ),
+            placeholder: (context, url) => Container(
+              color: Colors.white10,
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
                 ),
-              );
-            },
+              ),
+            ),
+            errorWidget: (context, url, error) => Container(
+              color: Colors.white10,
+              child: const Icon(Icons.broken_image_outlined, color: Colors.white54),
+            ),
           ),
         ),
       ),
