@@ -43,7 +43,10 @@ class WallpaperCard extends StatelessWidget {
             ),
             errorWidget: (context, url, error) => Container(
               color: Colors.white.withValues(alpha: 0.05),
-              child: const Icon(Icons.broken_image_outlined, color: Colors.white24),
+              child: const Icon(
+                Icons.broken_image_outlined,
+                color: Colors.white24,
+              ),
             ),
           ),
         ),

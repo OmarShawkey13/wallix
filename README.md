@@ -1,86 +1,94 @@
 # Wallix 📱
 
-A beautiful and functional Wallpaper application built with Flutter, designed to provide users with a vast collection of high-quality wallpapers. The app features a modern UI, categorization, offline favorites, and complete customization support.
+A premium, modern, and high-performance Wallpaper application built with Flutter. Wallix offers a curated collection of stunning wallpapers with advanced editing tools and a seamless user experience.
 
-## 🚀 Features
+## 🚀 Key Features
 
--   **Browse Wallpapers**: Explore a vast collection of wallpapers with infinite scrolling and pagination.
--   **Categories**: Browse wallpapers by specific categories.
--   **Favorites System**: Save your favorite wallpapers locally to access them later (powered by SQLite).
--   **Theme Customization**: Fully supported Light and Dark modes.
--   **Localization**: Multi-language support (English & Arabic).
--   **Preview**: View wallpapers in full-screen mode before setting them.
--   **Set Wallpaper**: Set wallpapers for Home Screen, Lock Screen, or Both.
--   **Download**: Download wallpapers to your device storage with MediaScanner integration.
--   **Efficient Networking**: optimized API calls using Dio with error handling.
+-   **Infinite Discovery**: Browse thousands of wallpapers with smooth pagination and infinite scrolling.
+-   **Smart Categorization**: Find the perfect wallpaper through well-organized categories.
+-   **Advanced Image Editor (Crop & Adjust)**:
+    -   **Interactive Cropping**: Precise framing with pinch-to-zoom and drag-to-move.
+    -   **Dynamic Filters**: Adjust **Blur** and **Brightness** in real-time.
+    -   **Live Simulation**: Preview how your wallpaper looks with a mock Home/Lock screen UI.
+-   **Favorites Library**: Save and manage your favorite wallpapers locally using a secure SQLite database.
+-   **One-Tap Application**: Set wallpapers for Home Screen, Lock Screen, or both instantly.
+-   **High-Quality Downloads**: Save wallpapers directly to your gallery with automatic media scanning.
+-   **Multi-Language Support**: Fully localized in **English** and **Arabic**.
+-   **Dark Mode**: Immersive Material 3 Dark theme support.
 
-## 🛠 Tech Stack
+## ✨ UI/UX Highlights
 
--   **Framework**: [Flutter](https://flutter.dev/) (SDK ^3.10.4)
--   **Language**: [Dart](https://dart.dev/)
--   **State Management**: [flutter_bloc](https://pub.dev/packages/flutter_bloc) (Cubit pattern)
--   **Dependency Injection**: [get_it](https://pub.dev/packages/get_it)
--   **Networking**: [dio](https://pub.dev/packages/dio)
--   **Local Database**: [sqflite](https://pub.dev/packages/sqflite)
--   **Local Storage**: [shared_preferences](https://pub.dev/packages/shared_preferences)
--   **Utilities**:
-    -   [dartz](https://pub.dev/packages/dartz) for functional error handling.
-    -   [skeletonizer](https://pub.dev/packages/skeletonizer) for loading states.
-    -   [path_provider](https://pub.dev/packages/path_provider) for filesystem access.
-    -   [permission_handler](https://pub.dev/packages/permission_handler) for managing permissions.
-    -   [media_scanner](https://pub.dev/packages/media_scanner) for updating gallery.
-    -   [flutter_wallpaper](https://pub.dev/packages/flutter_wallpaper) for setting wallpapers.
+-   **Material 3 Ready**: Built using the latest Material Design components and principles.
+-   **Glassmorphism Design**: Elegant blurred overlays and frosted glass effects for a sophisticated look.
+-   **Smooth Animations**: Immersive Hero transitions and micro-interactions for a fluid feel.
+-   **Responsive Layout**: Optimized for various screen sizes and aspect ratios.
+
+## 🛠 Tech Stack & Libraries
+
+-   **State Management**: [Flutter Bloc](https://pub.dev/packages/flutter_bloc) (Cubit pattern) for clean and predictable state.
+-   **Dependency Injection**: [Get_it](https://pub.dev/packages/get_it) for decoupled service management.
+-   **Networking**: [Dio](https://pub.dev/packages/dio) with functional error handling using [Dartz](https://pub.dev/packages/dartz).
+-   **Database**: [Sqflite](https://pub.dev/packages/sqflite) for local persistence.
+-   **Image Caching**: [Cached_network_image](https://pub.dev/packages/cached_network_image) for fast and efficient loading.
+-   **UI Enhancements**: [Skeletonizer](https://pub.dev/packages/skeletonizer) for modern loading states.
 
 ## 🏗 Architecture
 
-The project adopts a **Layered Architecture** focusing on separation of concerns and scalability.
+Wallix follows a **Feature-Driven Layered Architecture**, ensuring the code is maintainable, testable, and scalable.
 
-### 📂 Folder Structure
+### 📂 Detailed Project Structure
 
 ```
 lib/
-├── core/                  # Shared resources and core logic
+├── core/
 │   ├── di/                # Dependency Injection (Service Locator)
-│   ├── models/            # Data models (Wallpaper, Category, Translation)
-│   ├── network/           # Data Source Layer
-│   │   ├── local/         # Local storage (SqfliteHelper, CacheHelper)
-│   │   └── remote/        # Remote API (DioHelper, Endpoints)
-│   ├── theme/             # App Theme styling (Dark/Light)
-│   └── utils/             # Constants, Cubits (Global logic), Routes
-├── features/              # Feature-based modules
-│   ├── home/              # Main dashboard (Wallpapers, Categories, Favorites, Settings)
-│   └── wallpaper_preview/ # Full-screen wallpaper viewer
-└── main.dart              # Application entry point & initialization
+│   ├── models/            # Shared Data Entities
+│   ├── network/           # API (Remote) & Database (Local) logic
+│   ├── theme/             # Design System (Material 3 Colors & Typography)
+│   └── utils/             # Constants, Cubits, Spacing & Context Extensions
+├── features/
+│   ├── home/              # Wallpaper Discovery, Categories & Favorites
+│   │   └── presentation/
+│   │       ├── screen/    # Feature Entry Points
+│   │       └── widgets/   # Reusable Feature UI Components
+│   └── wallpaper_preview/ # Advanced Preview, Editing & Application
+│       └── presentation/
+│           ├── screen/    # Full-screen Preview & Crop/Edit Screens
+│           └── widgets/   # Adjustment panels, Action bars & Mock UI
+└── main.dart              # Global Providers & App Configuration
 ```
-
-### Key Architectural Highlights
-
-*   **State Management**: The app uses `HomeCubit` to manage global states including wallpaper data fetching, pagination logic (`_loadNextPage`), favorite toggling, theme/language switching, and setting wallpapers.
-*   **Dependency Injection**: `GetIt` is used to register and inject dependencies like `Dio`, `SharedPreferences`, and Cubits, ensuring testability and modularity.
-*   **Data Layer**:
-    *   **Remote**: `DioHelper` manages HTTP requests to the GitHub-hosted JSON APIs.
-    *   **Local**: `SqfliteHelper` handles persistent storage for favorite wallpapers, while `CacheHelper` manages user preferences (Theme/Language).
 
 ## 🏁 Getting Started
 
-1.  **Clone the repository**:
+### Prerequisites
+- Flutter SDK (3.11.1 or higher)
+- Android Studio / VS Code
+
+### Installation
+1.  **Clone the Repo**:
     ```bash
     git clone https://github.com/OmarShawkey13/wallix.git
     ```
-
-2.  **Install Dependencies**:
+2.  **Get Packages**:
     ```bash
     flutter pub get
     ```
-
-3.  **Run the App**:
+3.  **Run Application**:
     ```bash
     flutter run
     ```
 
 ## 🤝 Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
-Developed with Flutter 💙
+Developed with passion by **Omar Shawkey** 💙

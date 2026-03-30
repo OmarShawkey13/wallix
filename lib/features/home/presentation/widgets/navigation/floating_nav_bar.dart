@@ -39,7 +39,9 @@ class FloatingNavBar extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: ColorsManager.outlineColor.withValues(alpha: 0.1),
+                          color: ColorsManager.outlineColor.withValues(
+                            alpha: 0.1,
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -125,11 +127,15 @@ class _NavItem extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: (isSelected ? TextStylesManager.bold10 : TextStylesManager.regular10).copyWith(
-                color: isSelected
-                    ? ColorsManager.primary
-                    : ColorsManager.iconSecondaryColor,
-              ),
+              style:
+                  (isSelected
+                          ? TextStylesManager.bold10
+                          : TextStylesManager.regular10)
+                      .copyWith(
+                        color: isSelected
+                            ? ColorsManager.primary
+                            : ColorsManager.iconSecondaryColor,
+                      ),
             ),
           ],
         ),

@@ -34,13 +34,28 @@ class CustomStaggeredGrid extends StatelessWidget {
     return SingleChildScrollView(
       controller: scrollController,
       physics: const BouncingScrollPhysics(),
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding:
+          padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: _StaggeredColumn(indices: leftIndices, images: images, onTap: onTap, isFromFavorites: isFromFavorites)),
+          Expanded(
+            child: _StaggeredColumn(
+              indices: leftIndices,
+              images: images,
+              onTap: onTap,
+              isFromFavorites: isFromFavorites,
+            ),
+          ),
           horizontalSpace14,
-          Expanded(child: _StaggeredColumn(indices: rightIndices, images: images, onTap: onTap, isFromFavorites: isFromFavorites)),
+          Expanded(
+            child: _StaggeredColumn(
+              indices: rightIndices,
+              images: images,
+              onTap: onTap,
+              isFromFavorites: isFromFavorites,
+            ),
+          ),
         ],
       ),
     );
@@ -63,14 +78,18 @@ class _StaggeredColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: indices.map((index) => StaggeredCard(
-        key: ValueKey(images[index]),
-        index: index,
-        imageUrl: images[index],
-        images: images,
-        onTap: onTap,
-        isFromFavorites: isFromFavorites,
-      )).toList(),
+      children: indices
+          .map(
+            (index) => StaggeredCard(
+              key: ValueKey(images[index]),
+              index: index,
+              imageUrl: images[index],
+              images: images,
+              onTap: onTap,
+              isFromFavorites: isFromFavorites,
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -95,7 +114,8 @@ class StaggeredCard extends StatefulWidget {
   State<StaggeredCard> createState() => _StaggeredCardState();
 }
 
-class _StaggeredCardState extends State<StaggeredCard> with SingleTickerProviderStateMixin {
+class _StaggeredCardState extends State<StaggeredCard>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
 
@@ -106,7 +126,10 @@ class _StaggeredCardState extends State<StaggeredCard> with SingleTickerProvider
       vsync: this,
       duration: Duration(milliseconds: 600 + (widget.index % 5 * 100)),
     );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeOutExpo);
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutExpo,
+    );
     _controller.forward();
   }
 
@@ -124,7 +147,9 @@ class _StaggeredCardState extends State<StaggeredCard> with SingleTickerProvider
     return FadeTransition(
       opacity: _animation,
       child: SlideTransition(
-        position: _animation.drive(Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero)),
+        position: _animation.drive(
+          Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero),
+        ),
         child: RepaintBoundary(
           child: BlocBuilder<HomeCubit, HomeStates>(
             buildWhen: (_, state) => state is HomeScaleUpdatedState,
@@ -164,7 +189,7 @@ class _StaggeredCardState extends State<StaggeredCard> with SingleTickerProvider
                           borderRadius: BorderRadius.circular(32),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha:0.15),
+                              color: Colors.black.withValues(alpha: 0.15),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -180,14 +205,21 @@ class _StaggeredCardState extends State<StaggeredCard> with SingleTickerProvider
                                 fit: BoxFit.cover,
                                 memCacheWidth: 450,
                                 placeholder: (context, url) => Container(
-                                  color: ColorsManager.cardColor.withValues(alpha: 0.5),
+                                  color: ColorsManager.cardColor.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   child: const Center(
-                                    child: CircularProgressIndicator.adaptive(strokeWidth: 1.5),
+                                    child: CircularProgressIndicator.adaptive(
+                                      strokeWidth: 1.5,
+                                    ),
                                   ),
                                 ),
                                 errorWidget: (context, url, error) => Container(
                                   color: ColorsManager.cardColor,
-                                  child: const Icon(Icons.broken_image_outlined, color: Colors.grey),
+                                  child: const Icon(
+                                    Icons.broken_image_outlined,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
                               const _GradientOverlay(),
@@ -220,8 +252,8 @@ class _GradientOverlay extends StatelessWidget {
             end: Alignment.bottomCenter,
             colors: [
               Colors.transparent,
-              Colors.black.withValues(alpha:0.02),
-              Colors.black.withValues(alpha:0.35),
+              Colors.black.withValues(alpha: 0.02),
+              Colors.black.withValues(alpha: 0.35),
             ],
             stops: const [0.5, 0.8, 1.0],
           ),

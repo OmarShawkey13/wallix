@@ -102,15 +102,15 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
                 imageUrl: currentImage,
                 index: currentIndex,
               ),
-              
+
               // Content Layer
               WallpaperPager(
                 images: currentImages,
               ),
-              
+
               // Top Bar
               const PreviewBackButton(),
-              
+
               // Bottom Action Bar
               WallpaperActionBar(
                 onDownload: () => homeCubit.downloadWallpaper(currentImage),
@@ -130,7 +130,11 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
 
   void _handleGlobalStates(BuildContext context, HomeStates state) {
     if (state is HomeDownloadLoadingState) {
-      _showCustomSnackBar(context, appTranslation().get('downloading'), isLoading: true);
+      _showCustomSnackBar(
+        context,
+        appTranslation().get('downloading'),
+        isLoading: true,
+      );
     } else if (state is HomeDownloadSuccessState) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       _showCustomSnackBar(
@@ -148,7 +152,11 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
         color: ColorsManager.error,
       );
     } else if (state is HomeSetWallpaperLoadingState) {
-      _showCustomSnackBar(context, appTranslation().get('setting_wallpaper'), isLoading: true);
+      _showCustomSnackBar(
+        context,
+        appTranslation().get('setting_wallpaper'),
+        isLoading: true,
+      );
     } else if (state is HomeSetWallpaperSuccessState) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       _showCustomSnackBar(
@@ -160,8 +168,13 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
     }
   }
 
-  void _showCustomSnackBar(BuildContext context, String message,
-      {bool isLoading = false, IconData? icon, Color? color}) {
+  void _showCustomSnackBar(
+    BuildContext context,
+    String message, {
+    bool isLoading = false,
+    IconData? icon,
+    Color? color,
+  }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.transparent,
@@ -169,7 +182,9 @@ class _WallpaperPreviewScreenState extends State<WallpaperPreviewScreen> {
         content: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: ColorsManager.isDark ? const Color(0xFF2C2C2C) : Colors.white,
+            color: ColorsManager.isDark
+                ? const Color(0xFF2C2C2C)
+                : Colors.white,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(

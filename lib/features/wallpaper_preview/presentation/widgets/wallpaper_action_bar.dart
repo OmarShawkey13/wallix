@@ -43,7 +43,9 @@ class WallpaperActionBar extends StatelessWidget {
               children: [
                 _buildCircularButton(
                   onTap: onFavorite,
-                  icon: isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                  icon: isFavorite
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
                   color: isFavorite ? Colors.redAccent : Colors.white,
                 ),
                 horizontalSpace12,

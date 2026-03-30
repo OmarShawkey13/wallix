@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_wallpaper/flutter_wallpaper.dart';
 import 'package:wallix/core/theme/colors.dart';
@@ -50,7 +49,10 @@ class SetWallpaperBottomSheet extends StatelessWidget {
                   title: appTranslation().get('set_home_screen'),
                   onTap: () {
                     context.pop;
-                    homeCubit.setWallpaper(imageUrl, WallpaperManager.homeScreen);
+                    homeCubit.setWallpaper(
+                      imageUrl,
+                      WallpaperManager.homeScreen,
+                    );
                   },
                 ),
                 verticalSpace12,
@@ -59,7 +61,10 @@ class SetWallpaperBottomSheet extends StatelessWidget {
                   title: appTranslation().get('set_lock_screen'),
                   onTap: () {
                     context.pop;
-                    homeCubit.setWallpaper(imageUrl, WallpaperManager.lockScreen);
+                    homeCubit.setWallpaper(
+                      imageUrl,
+                      WallpaperManager.lockScreen,
+                    );
                   },
                 ),
                 verticalSpace12,
@@ -68,7 +73,10 @@ class SetWallpaperBottomSheet extends StatelessWidget {
                   title: appTranslation().get('set_both_screens'),
                   onTap: () {
                     context.pop;
-                    homeCubit.setWallpaper(imageUrl, WallpaperManager.bothScreen);
+                    homeCubit.setWallpaper(
+                      imageUrl,
+                      WallpaperManager.bothScreen,
+                    );
                   },
                 ),
               ],
@@ -107,7 +115,9 @@ class _SheetItem extends StatelessWidget {
             border: Border.all(
               color: ColorsManager.outlineColor.withValues(alpha: 0.1),
             ),
-            color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.02),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.03)
+                : Colors.black.withValues(alpha: 0.02),
           ),
           child: Row(
             children: [

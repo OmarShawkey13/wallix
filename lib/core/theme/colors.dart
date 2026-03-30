@@ -13,7 +13,9 @@ class ColorsManager {
 
   // -------- LIGHT THEME (Material 3 Surface Tones) -------- //
   static const Color lightBackground = Color(0xFFFEF7FF);
-  static const Color lightSurface = Color(0xFFF7F2FA); // للبطاقات والعناصر العائمة
+  static const Color lightSurface = Color(
+    0xFFF7F2FA,
+  ); // للبطاقات والعناصر العائمة
   static const Color lightTextPrimary = Color(0xFF1D1B20);
   static const Color lightTextSecondary = Color(0xFF49454F);
   static const Color lightOutline = Color(0xFF79747E); // للحدود الرفيعة
